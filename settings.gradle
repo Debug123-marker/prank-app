@@ -1,0 +1,8 @@
+settings.gradle
+build.gradle
+gradle.properties
+app/build.gradle
+app/src/main/AndroidManifest.xml
+app/src/main/java/com/prank/virus/MainActivity.java
+app/src/main/res/values/strings.xml
+.github/workflows/build.yml
