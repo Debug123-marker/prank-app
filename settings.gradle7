@@ -1,0 +1,74 @@
+package com.prank.virus;
+
+import android.app.Activity;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.view.Gravity;
+import android.widget.*;
+
+public class MainActivity extends Activity {
+    private TextView status;
+    private ProgressBar bar;
+    private int progress = 0;
+    private Handler h = new Handler(Looper.getMainLooper());
+
+    @Override protected void onCreate(Bundle b) {
+        super.onCreate(b);
+
+        LinearLayout ll = new LinearLayout(this);
+        ll.setOrientation(LinearLayout.VERTICAL);
+        ll.setBackgroundColor(Color.BLACK);
+        ll.setGravity(Gravity.CENTER);
+        ll.setPadding(60, 60, 60, 60);
+
+        TextView title = new TextView(this);
+        title.setText("⚠ СИСТЕМА ЗАРАЖЕНА ⚠");
+        title.setTextColor(Color.RED);
+        title.setTextSize(28);
+        title.setGravity(Gravity.CENTER);
+        ll.addView(title);
+
+        status = new TextView(this);
+        status.setText("Обнаружено 47 вирусов...");
+        status.setTextColor(Color.WHITE);
+        status.setTextSize(16);
+        status.setPadding(0, 40, 0, 40);
+        status.setGravity(Gravity.CENTER);
+        ll.addView(status);
+
+        bar = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
+        bar.setMax(100);
+        bar.setProgress(0);
+        ll.addView(bar);
+
+        Button joke = new Button(this);
+        joke.setText("Это шутка. Выйти.");
+        joke.setOnClickListener(v -> finish());
+        ll.addView(joke);
+
+        setContentView(ll);
+
+        startFakeInfection();
+    }
+
+    private void startFakeInfection() {
+        h.postDelayed(new Runnable() {
+            @Override public void run() {
+                if (progress >= 100) {
+                    status.setText("Шутка! Ничего не произошло.");
+                    status.setTextColor(Color.GREEN);
+                    return;
+                }
+                progress += 3;
+                bar.setProgress(progress);
+                status.setText("Заражение... " + progress + "%");
+                if (progress == 30) status.setText("Кража данных... " + progress + "%");
+                if (progress == 60) status.setText("Отправка на сервер... " + progress + "%");
+                if (progress == 90) status.setText("Почти готово... " + progress + "%");
+                h.postDelayed(this, 150);
+            }
+        }, 500);
+    }
+}
